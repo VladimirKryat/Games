@@ -15,6 +15,7 @@ public class SpaceInvadersGame extends Game {
     @Override
     public void initialize() {
         setScreenSize(WIDTH,HEIGHT);
+        showGrid(true);
         createGame();
     }
 //        отрисовка поля
@@ -52,9 +53,13 @@ public class SpaceInvadersGame extends Game {
             stars.add(star);
         }
     }
+    private void moveSpaceObjects(){
+        enemyFleet.move();
+    }
 
     @Override
     public void onTurn(int step) {
+        moveSpaceObjects();
         drawScene();
     }
 }

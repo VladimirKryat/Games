@@ -1,9 +1,12 @@
 package com.javarush.games.spaceinvaders.gameobjects;
 
 import com.javarush.engine.cell.Game;
+import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
+import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class EnemyFleet {
@@ -15,6 +18,8 @@ public class EnemyFleet {
     private static final int STEP = ShapeMatrix.ENEMY.length+1;
     //список кораблей
     private List<EnemyShip> ships;
+    private Direction direction = Direction.RIGHT;
+
 
     public EnemyFleet(){
         createShips();
@@ -36,4 +41,38 @@ public class EnemyFleet {
         ships.forEach(enemyShip -> enemyShip.draw(game));
     }
 
+    //координата самого "левого" корабля
+    private double getLeftBorder(){
+        return ships.stream().min(Comparator.comparingDouble(ship -> ship.x)).get().x;
+    }
+    //x+width самого правого корабля
+    private double getRightBorder(){
+        EnemyShip rightShip = ships.stream().max(Comparator.comparingDouble(ship -> ship.x + ship.width)).get();
+        return rightShip.x+(double)rightShip.width;
+    }
+    //идея в том чтобы скорость движения увеличивалась при уменьшении количества врагов
+    private double getSpeed(){
+        double result = ships.size()==0? 1:ships.size();
+        return Double.min(2.0,3.0/ships.size());
+    }
+
+    public void move(){
+//        если кораблей нет ничего не делаем
+        if (ships.size()==0) return;
+//        если достигли края арены, меняем направление и спускаемся вниз
+        double speed = getSpeed();
+        boolean flageDown = false;
+        if (direction==Direction.LEFT && getLeftBorder()<0){
+            direction=Direction.RIGHT;
+            flageDown=true;
+        }
+        else {
+            if (direction == Direction.RIGHT && getRightBorder() > SpaceInvadersGame.WIDTH) {
+                direction = Direction.LEFT;
+                flageDown = true;
+            }
+        }
+        if (flageDown) ships.forEach(ship->ship.move(Direction.DOWN,speed));
+        else ships.forEach(ship->ship.move(direction,speed));
+    }
 }
