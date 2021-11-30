@@ -12,5 +12,6 @@
 !/out/8_Games/*.jar
 /Instruction.png
 /out.log
+JavaRushPlugin.properties
 /out.log.*
 /8.Games/src/com/javarush/games/minigames/**
