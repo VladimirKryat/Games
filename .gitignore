@@ -9,7 +9,7 @@
 /4.JavaCollections/**
 /5.OnlineInternship/**
 /out/**
-!/out/8_Games/*.jar
+!/out/artifacts/8_Games/
 /Instruction.png
 /out.log
 JavaRushPlugin.properties
