@@ -75,4 +75,16 @@ public class EnemyFleet {
         if (flageDown) ships.forEach(ship->ship.move(Direction.DOWN,speed));
         else ships.forEach(ship->ship.move(direction,speed));
     }
+
+    //выстрел с вероятность COMPLEXITY %
+    public Bullet fire(Game game){
+        if (ships.size()==0) return null;
+        //получем число рандомом [0..100/COMPLEXITY], которое == 0  с вероятностью 100/COMPLEXITY
+        int probability = game.getRandomNumber(100/SpaceInvadersGame.COMPLEXITY);
+        //если 0 то не стреляем
+        if (probability>0) return null;
+        //выбираем рандомный корабль и стреляем
+        int numberRandomShip = game.getRandomNumber(ships.size());
+        return ships.get(numberRandomShip).fire();
+    }
 }
