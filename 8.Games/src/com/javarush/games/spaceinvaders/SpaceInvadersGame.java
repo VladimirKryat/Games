@@ -21,6 +21,8 @@ public class SpaceInvadersGame extends Game {
     //сложность игры == вероятность выстрела вражеского корабля
     public static final int COMPLEXITY = 5;
     private List<Bullet> enemyBullets;
+    private boolean isGameStopped;
+    private int animationsCount;
     @Override
     public void initialize() {
         setScreenSize(WIDTH,HEIGHT);
@@ -44,6 +46,8 @@ public class SpaceInvadersGame extends Game {
         enemyFleet=new EnemyFleet();
         enemyBullets = new ArrayList<>();
         playerShip = new PlayerShip();
+        isGameStopped =false;
+        animationsCount=0;
         drawScene();
         setTurnTimer(40);
     }
@@ -91,7 +95,23 @@ public class SpaceInvadersGame extends Game {
     }
     //метод для проверки объектов на поле
     private void check(){
+        //игру завершаем не сразу, чтобы отобразились анимации
+        if (!playerShip.isAlive) stopGameWithDelay();
         playerShip.verifyHit(enemyBullets);
         removeDeadBullets();
     }
+
+    //игра не останавливается пока счетчик шагов <10
+    private void stopGameWithDelay() {
+        animationsCount++;
+        if (animationsCount>=10) stopGame(playerShip.isAlive);
+    }
+
+    private void stopGame(boolean isWin){
+        isGameStopped =true;
+        stopTurnTimer();
+        if (isWin) showMessageDialog(Color.AQUA, "YOU WIN", Color.GREEN, 50);
+        else showMessageDialog(Color.AQUA,"YOU LOSE", Color.RED, 50);
+    }
+
 }
