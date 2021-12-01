@@ -71,6 +71,7 @@ public class SpaceInvadersGame extends Game {
         }
     }
     private void moveSpaceObjects(){
+        playerShip.move();
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
     }
@@ -114,4 +115,26 @@ public class SpaceInvadersGame extends Game {
         else showMessageDialog(Color.AQUA,"YOU LOSE", Color.RED, 50);
     }
 
+    @Override
+    public void onKeyPress(Key key) {
+        switch (key){
+            case SPACE: if (isGameStopped) {
+                isGameStopped=false;
+                createGame();
+            }
+                break;
+            case LEFT:playerShip.setDirection(Direction.LEFT);
+                break;
+            case RIGHT:playerShip.setDirection(Direction.RIGHT);
+                break;
+        }
+    }
+
+    //при отпускании клавиши влево или вправо при совпадении с направлением корабля, устанавливаем Direction.UP для остановки корабля
+    @Override
+    public void onKeyReleased(Key key) {
+        if ((key==Key.LEFT&&playerShip.getDirection()==Direction.LEFT)||
+                (key==Key.RIGHT&&playerShip.getDirection()==Direction.RIGHT))
+            playerShip.setDirection(Direction.UP);
+    }
 }
