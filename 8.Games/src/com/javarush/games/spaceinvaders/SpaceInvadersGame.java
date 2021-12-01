@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders;
 import com.javarush.engine.cell.*;
 import com.javarush.games.spaceinvaders.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.EnemyFleet;
+import com.javarush.games.spaceinvaders.gameobjects.PlayerShip;
 import com.javarush.games.spaceinvaders.gameobjects.Star;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class SpaceInvadersGame extends Game {
     private List<Star> stars;
     //вражеский флот
     private EnemyFleet enemyFleet;
+    private PlayerShip playerShip;
     //сложность игры == вероятность выстрела вражеского корабля
     public static final int COMPLEXITY = 5;
     private List<Bullet> enemyBullets;
@@ -41,6 +43,7 @@ public class SpaceInvadersGame extends Game {
         createStars();
         enemyFleet=new EnemyFleet();
         enemyBullets = new ArrayList<>();
+        playerShip = new PlayerShip();
         drawScene();
         setTurnTimer(40);
     }
@@ -50,6 +53,7 @@ public class SpaceInvadersGame extends Game {
         drawField();
         enemyFleet.draw(this);
         enemyBullets.forEach(bullet -> bullet.draw(this));
+        playerShip.draw(this);
     }
 
     private void createStars(){
@@ -87,6 +91,7 @@ public class SpaceInvadersGame extends Game {
     }
     //метод для проверки объектов на поле
     private void check(){
+        playerShip.verifyHit(enemyBullets);
         removeDeadBullets();
     }
 }

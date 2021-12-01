@@ -28,4 +28,37 @@ public class GameObject {
         this.width=matrix[0].length;
         this.height=matrix.length;
     }
+
+    //получаем фактическое(только заполненные элементы матрицы) тело переданного объекта
+    // и вызываем проверку с пересечением тела текущего объекта
+    public boolean isCollision(GameObject gameObject) {
+        //проход по матрице переданного объекта
+        for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
+            for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
+                //для элемента который > 0 (т.е содержит тело объекта) проверяем на коллизии с текущим объектом
+                if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
+                    if (isCollision(gameObjectX + gameObject.x, gameObjectY + gameObject.y)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    //проверка пересечения полученных координат с фактическим телом текущего объекта
+    private boolean isCollision(double x, double y) {
+        //проходим по матрице(телу) текущего объекта
+        for (int matrixX = 0; matrixX < width; matrixX++) {
+            for (int matrixY = 0; matrixY < height; matrixY++) {
+                //проверяем на совпадение с полученными координатами, координаты частей текущего объекта
+                if (matrix[matrixY][matrixX] > 0
+                        && matrixX + (int) this.x == (int) x
+                        && matrixY + (int) this.y == (int) y) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
