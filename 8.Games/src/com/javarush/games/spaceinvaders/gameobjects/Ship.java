@@ -45,4 +45,9 @@ public class Ship extends GameObject{
         nextFrame();
         super.draw(game);
     }
+
+    //false - если корабль уничтожен и отработала вся анимация
+    public boolean isVisible(){
+        return isAlive||frameIndex<frames.size()-1;
+    }
 }

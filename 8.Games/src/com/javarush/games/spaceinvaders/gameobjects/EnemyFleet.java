@@ -7,6 +7,7 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 public class EnemyFleet {
@@ -86,5 +87,26 @@ public class EnemyFleet {
         //выбираем рандомный корабль и стреляем
         int numberRandomShip = game.getRandomNumber(ships.size());
         return ships.get(numberRandomShip).fire();
+    }
+    public void deleteHiddenShips(){
+        Iterator<EnemyShip> shipIterator = ships.iterator();
+        while (shipIterator.hasNext())
+            if (!shipIterator.next().isVisible()) shipIterator.remove();
+    }
+    //проверка попадания пуль и kill их в случае истины
+
+    public void verifyHit(List<Bullet>bullets){
+        if (bullets==null||bullets.isEmpty()) return;
+        for(EnemyShip ship:ships){
+            if (!ship.isAlive) continue;
+            Iterator<Bullet> bulletIterator = bullets.iterator();
+            while (bulletIterator.hasNext()){
+                Bullet bullet = bulletIterator.next();
+                if (bullet.isAlive&&ship.isCollision(bullet)){
+                    bullet.kill();
+                    ship.kill();
+                }
+            }
+        }
     }
 }

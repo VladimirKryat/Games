@@ -14,13 +14,16 @@ public class SpaceInvadersGame extends Game {
     //размеры поля
     public static final int WIDTH = 64;
     public static final int HEIGHT = 64;
+    //вероятность выстрела вражеского корабля
+    public static final int COMPLEXITY = 5;
+    //максимальное количество пуль от игрока на поле
+    private static final int PLAYER_BULLETS_MAX = 2;
     private List<Star> stars;
     //вражеский флот
     private EnemyFleet enemyFleet;
     private PlayerShip playerShip;
-    //сложность игры == вероятность выстрела вражеского корабля
-    public static final int COMPLEXITY = 5;
     private List<Bullet> enemyBullets;
+    private List<Bullet> playerBullets;
     private boolean isGameStopped;
     private int animationsCount;
     @Override
@@ -45,6 +48,7 @@ public class SpaceInvadersGame extends Game {
         createStars();
         enemyFleet=new EnemyFleet();
         enemyBullets = new ArrayList<>();
+        playerBullets = new ArrayList<>();
         playerShip = new PlayerShip();
         isGameStopped =false;
         animationsCount=0;
@@ -57,6 +61,7 @@ public class SpaceInvadersGame extends Game {
         drawField();
         enemyFleet.draw(this);
         enemyBullets.forEach(bullet -> bullet.draw(this));
+        playerBullets.forEach(bullet -> bullet.draw(this));
         playerShip.draw(this);
     }
 
@@ -74,6 +79,7 @@ public class SpaceInvadersGame extends Game {
         playerShip.move();
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
+        playerBullets.forEach(Bullet::move);
     }
 
     @Override
@@ -86,11 +92,18 @@ public class SpaceInvadersGame extends Game {
     }
     //проверка пуль и удаление если они !isAlive или вышли за пределы поля
     private void removeDeadBullets(){
-        Iterator<Bullet> iterator = enemyBullets.iterator();
-        while (iterator.hasNext()){
-            Bullet bullet = iterator.next();
+        Iterator<Bullet> iteratorEnemyBullets = enemyBullets.iterator();
+        while (iteratorEnemyBullets.hasNext()){
+            Bullet bullet = iteratorEnemyBullets.next();
             if (!bullet.isAlive||bullet.y>=HEIGHT-1) {
-                iterator.remove();
+                iteratorEnemyBullets.remove();
+            }
+        }
+        Iterator<Bullet> iteratorPlayerBullets = playerBullets.iterator();
+        while (iteratorPlayerBullets.hasNext()){
+            Bullet bullet = iteratorPlayerBullets.next();
+            if (!bullet.isAlive||bullet.y+bullet.height<0){
+                iteratorPlayerBullets.remove();
             }
         }
     }
@@ -99,6 +112,8 @@ public class SpaceInvadersGame extends Game {
         //игру завершаем не сразу, чтобы отобразились анимации
         if (!playerShip.isAlive) stopGameWithDelay();
         playerShip.verifyHit(enemyBullets);
+        enemyFleet.verifyHit(playerBullets);
+        enemyFleet.deleteHiddenShips();
         removeDeadBullets();
     }
 
@@ -118,10 +133,15 @@ public class SpaceInvadersGame extends Game {
     @Override
     public void onKeyPress(Key key) {
         switch (key){
-            case SPACE: if (isGameStopped) {
-                isGameStopped=false;
-                createGame();
-            }
+            case SPACE:
+                if (playerBullets.size()<PLAYER_BULLETS_MAX) {
+                    Bullet bullet = playerShip.fire();
+                    if (bullet != null) playerBullets.add(bullet);
+                }
+                if (isGameStopped) {
+                    isGameStopped=false;
+                    createGame();
+                }
                 break;
             case LEFT:playerShip.setDirection(Direction.LEFT);
                 break;
@@ -136,5 +156,12 @@ public class SpaceInvadersGame extends Game {
         if ((key==Key.LEFT&&playerShip.getDirection()==Direction.LEFT)||
                 (key==Key.RIGHT&&playerShip.getDirection()==Direction.RIGHT))
             playerShip.setDirection(Direction.UP);
+    }
+
+    //если координаты не валидны не обрабатывать их, чтобы не было ошибок
+    @Override
+    public void setCellValueEx(int x, int y, Color cellColor, String value) {
+        if (x<0||x>=WIDTH||y<0||y>=HEIGHT) return;
+        super.setCellValueEx(x, y, cellColor, value);
     }
 }

@@ -3,6 +3,9 @@ package com.javarush.games.spaceinvaders.gameobjects;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class EnemyShip extends Ship {
     public EnemyShip(double x, double y) {
         super(x, y);
@@ -29,5 +32,15 @@ public class EnemyShip extends Ship {
                 y += 2;
                 break;
         }
+    }
+
+    //запустить анимацию уничтожения и изменить флаг isAlive=false;
+    @Override
+    public void kill() {
+        if (!isAlive) return;
+        isAlive=false;
+        setAnimatedView(ShapeMatrix.KILL_ENEMY_ANIMATION_FIRST,
+                ShapeMatrix.KILL_ENEMY_ANIMATION_SECOND,
+                ShapeMatrix.KILL_ENEMY_ANIMATION_THIRD);
     }
 }

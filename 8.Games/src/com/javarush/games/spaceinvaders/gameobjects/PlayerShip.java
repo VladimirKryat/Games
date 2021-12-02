@@ -15,7 +15,7 @@ public class PlayerShip extends Ship{
     }
     //проверка на попадание вражеской пули
     public  void verifyHit(List<Bullet> bullets){
-        //прерываем проверку если пуль нет или корабли игрока уничтожен
+        //прерываем проверку если пуль нет или корабль игрока уничтожен
         if (bullets==null||bullets.isEmpty()||!isAlive) return;
         Iterator<Bullet> bulletIterator = bullets.iterator();
         //проход по вражеским пулям с проверкой на коллизию с телом корабля игрока
@@ -62,5 +62,13 @@ public class PlayerShip extends Ship{
         if (x+width>SpaceInvadersGame.WIDTH){
             x=SpaceInvadersGame.WIDTH-width;
         }
+    }
+
+    @Override
+    public Bullet fire() {
+        if (!isAlive) return null;
+        //x для новой пули - должен быть поцентру корабля -> x+2 || x+width/2
+        //новая пуля должна быть выше корабля -> y-heightBullet
+        return new Bullet(x+2,y-ShapeMatrix.BULLET.length,Direction.UP);
     }
 }
