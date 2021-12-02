@@ -25,6 +25,7 @@ public class SpaceInvadersGame extends Game {
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private boolean isGameStopped;
+    private int score;
     //поле для подсчета ходов после неформального завершения игры, чтобы завершить анимацию и остановить игру
     private int animationsCount;
     @Override
@@ -47,6 +48,7 @@ public class SpaceInvadersGame extends Game {
 
     private void createGame(){
         createStars();
+        score=0;
         enemyFleet=new EnemyFleet();
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
@@ -89,6 +91,7 @@ public class SpaceInvadersGame extends Game {
         Bullet newBullet = enemyFleet.fire(this);
         if (newBullet!=null) enemyBullets.add(newBullet);
         check();
+        setScore(score);
         drawScene();
     }
     //проверка пуль и удаление если они !isAlive или вышли за пределы поля
@@ -122,7 +125,7 @@ public class SpaceInvadersGame extends Game {
         //проверка на попадание по игроку
         playerShip.verifyHit(enemyBullets);
         //проверка на попадание пули в соперника
-        enemyFleet.verifyHit(playerBullets);
+        score+= enemyFleet.verifyHit(playerBullets);
         //удаляем уничтоженные корабли, анимация уничтожения которых уже закончена
         enemyFleet.deleteHiddenShips();
         //удаляем пули улетевшие за поле и попавшие в кого-то

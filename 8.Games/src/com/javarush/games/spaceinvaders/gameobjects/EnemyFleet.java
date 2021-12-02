@@ -95,17 +95,20 @@ public class EnemyFleet {
     }
     //проверка попадания пуль и kill их в случае истины
 
-    public void verifyHit(List<Bullet>bullets){
-        if (bullets==null||bullets.isEmpty()) return;
+    public int verifyHit(List<Bullet>bullets){
+        if (bullets==null||bullets.isEmpty()) return 0;
+        int result = 0;
         for(EnemyShip ship:ships){
             if (!ship.isAlive) continue;
             for (Bullet bullet : bullets) {
                 if (bullet.isAlive && ship.isCollision(bullet)) {
                     bullet.kill();
                     ship.kill();
+                    result+=ship.score;
                 }
             }
         }
+        return result;
     }
     
     public double getBottomBorder(){

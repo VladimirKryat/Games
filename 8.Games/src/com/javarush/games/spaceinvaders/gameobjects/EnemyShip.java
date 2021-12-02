@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class EnemyShip extends Ship {
+    public int score = 15;
     public EnemyShip(double x, double y) {
         super(x, y);
         setStaticView(ShapeMatrix.ENEMY);
