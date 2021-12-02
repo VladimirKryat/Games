@@ -34,10 +34,20 @@ public class Ship extends GameObject{
     }
 //    устанавливаем следущий кадр, если не установлен последний кадр
     public void nextFrame(){
-        if (frameIndex<frames.size()-1){
+        frameIndex++;
+        if (frameIndex >= frames.size()) {
+            return;
+        }
+        matrix = frames.get(frameIndex);
+
+        /*if (frameIndex<=frames.size()-1){
             frameIndex++;
             setMatrix(frames.get(frameIndex));
-        }
+        }*/
+        /*else {
+            frameIndex=0;
+            setMatrix(frames.get(frameIndex));
+        }*/
     }
 
     @Override

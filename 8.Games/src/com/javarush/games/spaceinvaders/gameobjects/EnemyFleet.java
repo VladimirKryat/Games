@@ -37,6 +37,11 @@ public class EnemyFleet {
                 EnemyShip enemyShip = new EnemyShip(x*STEP,y*STEP+12);
                 ships.add(enemyShip);
             }
+        ships.add(new Boss(
+                //босс генерируется в середине вражесского флота
+                STEP*COLUMNS_COUNT/2-ShapeMatrix.BOSS_ANIMATION_FIRST.length/2-1,
+                5
+        ));
     }
     public void draw(Game game){
         ships.forEach(enemyShip -> enemyShip.draw(game));
@@ -89,9 +94,7 @@ public class EnemyFleet {
         return ships.get(numberRandomShip).fire();
     }
     public void deleteHiddenShips(){
-        Iterator<EnemyShip> shipIterator = ships.iterator();
-        while (shipIterator.hasNext())
-            if (!shipIterator.next().isVisible()) shipIterator.remove();
+        ships.removeIf(enemyShip -> !enemyShip.isVisible());
     }
     //проверка попадания пуль и kill их в случае истины
 
@@ -99,10 +102,8 @@ public class EnemyFleet {
         if (bullets==null||bullets.isEmpty()) return;
         for(EnemyShip ship:ships){
             if (!ship.isAlive) continue;
-            Iterator<Bullet> bulletIterator = bullets.iterator();
-            while (bulletIterator.hasNext()){
-                Bullet bullet = bulletIterator.next();
-                if (bullet.isAlive&&ship.isCollision(bullet)){
+            for (Bullet bullet : bullets) {
+                if (bullet.isAlive && ship.isCollision(bullet)) {
                     bullet.kill();
                     ship.kill();
                 }

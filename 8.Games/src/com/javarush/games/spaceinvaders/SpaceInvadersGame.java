@@ -25,6 +25,7 @@ public class SpaceInvadersGame extends Game {
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private boolean isGameStopped;
+    //поле для подсчета ходов после неформального завершения игры, чтобы завершить анимацию и остановить игру
     private int animationsCount;
     @Override
     public void initialize() {
