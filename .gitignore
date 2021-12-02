@@ -8,8 +8,9 @@
 /3.JavaMultithreading/**
 /4.JavaCollections/**
 /5.OnlineInternship/**
+#/out/artifacts/[!8]*/
 /out/**
-!/out/artifacts/8_Games/
+/out/production/**
 /Instruction.png
 /out.log
 JavaRushPlugin.properties
