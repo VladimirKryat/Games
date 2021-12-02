@@ -5,10 +5,7 @@ import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class EnemyFleet {
     //кол-во рядов кораблей
@@ -109,5 +106,15 @@ public class EnemyFleet {
                 }
             }
         }
+    }
+    
+    public double getBottomBorder(){
+        if (ships.isEmpty()) return 0.0;
+        EnemyShip lowestShip = ships.stream().max(Comparator.comparingDouble(ship -> ship.y + ship.height)).orElse(null);
+        return lowestShip.y+lowestShip.height;
+    }
+
+    public int getShipsCount(){
+        return ships.size();
     }
 }

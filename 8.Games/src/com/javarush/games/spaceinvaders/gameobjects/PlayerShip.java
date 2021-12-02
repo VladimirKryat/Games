@@ -72,4 +72,7 @@ public class PlayerShip extends Ship{
         //новая пуля должна быть выше корабля -> y-heightBullet
         return new Bullet(x+2,y-ShapeMatrix.BULLET.length,Direction.UP);
     }
+    public void win() {
+        setStaticView(ShapeMatrix.WIN_PLAYER);
+    }
 }

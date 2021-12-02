@@ -17,7 +17,7 @@ public class SpaceInvadersGame extends Game {
     //вероятность выстрела вражеского корабля
     public static final int COMPLEXITY = 5;
     //максимальное количество пуль от игрока на поле
-    private static final int PLAYER_BULLETS_MAX = 2;
+    private static final int PLAYER_BULLETS_MAX = 4;
     private List<Star> stars;
     //вражеский флот
     private EnemyFleet enemyFleet;
@@ -110,11 +110,22 @@ public class SpaceInvadersGame extends Game {
     }
     //метод для проверки объектов на поле
     private void check(){
+        //если врагов не осталось, то реализуем выигрыш
+        if (enemyFleet.getShipsCount()==0){
+            playerShip.win();
+            stopGameWithDelay();
+        }
+        //уничтожаем игрока если соперник ниже его
+        if (enemyFleet.getBottomBorder()>=playerShip.y) playerShip.kill();
         //игру завершаем не сразу, чтобы отобразились анимации
         if (!playerShip.isAlive) stopGameWithDelay();
+        //проверка на попадание по игроку
         playerShip.verifyHit(enemyBullets);
+        //проверка на попадание пули в соперника
         enemyFleet.verifyHit(playerBullets);
+        //удаляем уничтоженные корабли, анимация уничтожения которых уже закончена
         enemyFleet.deleteHiddenShips();
+        //удаляем пули улетевшие за поле и попавшие в кого-то
         removeDeadBullets();
     }
 
