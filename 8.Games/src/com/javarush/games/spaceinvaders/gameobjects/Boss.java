@@ -7,7 +7,8 @@ public class Boss extends EnemyShip{
     private int frameCount=0;
     public Boss(double x, double y) {
         super(x, y);
-        setAnimatedView(ShapeMatrix.BOSS_ANIMATION_FIRST,
+        setAnimatedView(true,
+                ShapeMatrix.BOSS_ANIMATION_FIRST,
                 ShapeMatrix.BOSS_ANIMATION_SECOND);
     }
 
@@ -15,7 +16,8 @@ public class Boss extends EnemyShip{
     public void kill() {
         if (!isAlive) return;
         isAlive=false;
-        setAnimatedView(ShapeMatrix.KILL_BOSS_ANIMATION_FIRST,
+        setAnimatedView(false,
+                ShapeMatrix.KILL_BOSS_ANIMATION_FIRST,
                 ShapeMatrix.KILL_BOSS_ANIMATION_SECOND,
                 ShapeMatrix.KILL_BOSS_ANIMATION_THIRD);
     }
@@ -35,7 +37,7 @@ public class Boss extends EnemyShip{
     public Bullet fire() {
         if (!isAlive) return null;
         if (matrix==ShapeMatrix.BOSS_ANIMATION_FIRST){
-            return new Bullet(x+width-1, y=y+height, Direction.DOWN);
+            return new Bullet(x+6, y=y+height, Direction.DOWN);
         }
         else{
             return new Bullet(x,y+height,Direction.DOWN);

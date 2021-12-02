@@ -12,6 +12,7 @@ public class Ship extends GameObject{
     //текущий кадр анимации
     private int frameIndex;
     public boolean isAlive=true;
+    private boolean loopAnimation;
     public Ship(double x, double y) {
         super(x, y);
     }
@@ -27,27 +28,20 @@ public class Ship extends GameObject{
     public void kill(){
         isAlive=false;
     }
-    public void setAnimatedView(int[][]... viewFrames){
+    public void setAnimatedView(boolean isLoopAnimation, int[][]... viewFrames){
+        loopAnimation=isLoopAnimation;
         setMatrix(viewFrames[0]);
         frameIndex=0;
         frames=Arrays.asList(viewFrames);
     }
 //    устанавливаем следущий кадр, если не установлен последний кадр
-    public void nextFrame(){
+    public void nextFrame() {
         frameIndex++;
         if (frameIndex >= frames.size()) {
-            return;
+            if (loopAnimation) frameIndex=0;
+            else return;
         }
         matrix = frames.get(frameIndex);
-
-        /*if (frameIndex<=frames.size()-1){
-            frameIndex++;
-            setMatrix(frames.get(frameIndex));
-        }*/
-        /*else {
-            frameIndex=0;
-            setMatrix(frames.get(frameIndex));
-        }*/
     }
 
     @Override
