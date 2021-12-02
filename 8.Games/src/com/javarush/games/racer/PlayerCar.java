@@ -17,6 +17,7 @@ public class PlayerCar extends GameObject{
     private Direction direction;
     public PlayerCar() {
         super(RacerGame.WIDTH/2+2, RacerGame.HEIGHT-playerCarHeight-1, ShapeMatrix.PLAYER);
+        setDirection(Direction.NONE);
     }
     public void move(){
         switch (direction){

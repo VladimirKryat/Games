@@ -1,9 +1,5 @@
 package com.javarush.games.racer;
 
-import com.javarush.games.racer.GameObject;
-import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.ShapeMatrix;
-
 /*Финишная линия появится на трассе в конце игры.
 На самом деле объект финишной линии создается в начале игры,
 но находится выше игрового поля, поэтому невидим.

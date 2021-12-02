@@ -26,6 +26,7 @@ public class RacerGame extends Game {
         roadManager = new RoadManager();
         roadMarking=new RoadMarking();
         player=new PlayerCar();
+        player.speed=1;
         finishLine = new FinishLine();
         progressBar = new ProgressBar(RACE_GOAL_CARS_COUNT);
         isGameStopped=false;
