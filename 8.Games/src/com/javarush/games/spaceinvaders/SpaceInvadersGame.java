@@ -53,10 +53,15 @@ public class SpaceInvadersGame extends Game {
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
         playerShip = new PlayerShip();
-        isGameStopped =false;
+        isGameStopped =true;
         animationsCount=0;
         drawScene();
         setTurnTimer(40);
+    }
+
+    private void helpMessage() {
+        showMessageDialog(Color.ANTIQUEWHITE, " \tControl:\t\n \u2190/\u2192 : move\n Space : fire\n \tPress Space\t", Color.DARKRED, 20);
+//        isGameStopped=false;
     }
 
 
@@ -87,6 +92,9 @@ public class SpaceInvadersGame extends Game {
 
     @Override
     public void onTurn(int step) {
+        if (isGameStopped) {
+            helpMessage();
+        }
         moveSpaceObjects();
         Bullet newBullet = enemyFleet.fire(this);
         if (newBullet!=null) enemyBullets.add(newBullet);
@@ -149,18 +157,21 @@ public class SpaceInvadersGame extends Game {
     public void onKeyPress(Key key) {
         switch (key){
             case SPACE:
+                if (isGameStopped) {
+                    createGame();
+                    isGameStopped=false;
+                    break;
+                }
                 if (playerBullets.size()<PLAYER_BULLETS_MAX) {
                     Bullet bullet = playerShip.fire();
                     if (bullet != null) playerBullets.add(bullet);
-                }
-                if (isGameStopped) {
-                    isGameStopped=false;
-                    createGame();
                 }
                 break;
             case LEFT:playerShip.setDirection(Direction.LEFT);
                 break;
             case RIGHT:playerShip.setDirection(Direction.RIGHT);
+                break;
+            case ESCAPE: stop();
                 break;
         }
     }
@@ -178,5 +189,13 @@ public class SpaceInvadersGame extends Game {
     public void setCellValueEx(int x, int y, Color cellColor, String value) {
         if (x<0||x>=WIDTH||y<0||y>=HEIGHT) return;
         super.setCellValueEx(x, y, cellColor, value);
+    }
+
+    @Override
+    public void stop() {
+        if (isGameStopped) Runtime.getRuntime().exit(0);
+        isGameStopped=true;
+        stopTurnTimer();
+        showMessageDialog(Color.ANTIQUEWHITE," \t\tGame stopped.\t\t \n Press Space/Escape for restart/exit ",Color.DARKRED,25);
     }
 }
