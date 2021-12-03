@@ -104,6 +104,8 @@ public class RacerGame extends Game {
             case SPACE:
                 if (isGameStopped) createGame();
                 break;
+            case ESCAPE:
+                stop();
         }
     }
 
@@ -124,5 +126,12 @@ public class RacerGame extends Game {
         isGameStopped=true;
         showMessageDialog(Color.BLUE,"YOU WIN",Color.GREEN,50);
         stopTurnTimer();
+    }
+
+    @Override
+    public void stop() {
+        if (isGameStopped) Runtime.getRuntime().exit(0);
+        isGameStopped=true;
+        showMessageDialog(Color.BLUE,"Press Esc/Space for Exit/Restart",Color.RED,25);
     }
 }
