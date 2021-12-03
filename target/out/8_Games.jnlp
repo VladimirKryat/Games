@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="8_Games.jnlp">
+    <information>
+        <title>Games</title>
+        <vendor>Unknown</vendor>
+        <description>JavaRush games</description>
+        <offline-allowed/>
+    </information>
+    <update check="background"/>
+    <resources>
+        <j2se version="11.0.13+" href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="8_Games.jar" size="54481" download="eager"/>
+        <jar href="desktop-game-engine.jar" size="40625" download="eager"/>
+    </resources>
+    <jfx:javafx-desc width="600" height="400" main-class="com.javarush.games.spaceinvaders.SpaceInvadersGame" name="SpaceInvadersGame"/>
+</jnlp>
+
