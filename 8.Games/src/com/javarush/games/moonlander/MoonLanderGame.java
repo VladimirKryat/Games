@@ -101,6 +101,9 @@ public class MoonLanderGame extends Game{
             case SPACE:
                 if (isGameStopped) createGame();
                 break;
+            case ESCAPE:
+                stop();
+                break;
             default:
 
                 break;
@@ -123,4 +126,10 @@ public class MoonLanderGame extends Game{
                 break;
         }
     }   //срабатывает при  отпускании клавиши
+    @Override
+    public void stop(){
+        if (isGameStopped) Runtime.getRuntime().exit(0);
+        isGameStopped=true;
+        showMessageDialog(Color.YELLOWGREEN,"Press Esc/Space for Exit/Restart",Color.RED,25);
+    }
 }
